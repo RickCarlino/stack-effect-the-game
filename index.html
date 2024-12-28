@@ -1,477 +1,106 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta charset="UTF-8">
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
     <title>Forth Memory Web Game</title>
     <!-- Google Font: Baloo 2 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com/">
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
-    <link href="index_files/css2.css" rel="stylesheet">
-    <style>
-      body {
-        font-family: "Baloo 2", cursive, sans-serif;
-        margin: 20px;
-        text-align: center;
-        background: #ffeafc;
-        color: #333;
-      }
-      h1 {
-        margin-bottom: 0.5em;
-        color: #c71585;
-        text-shadow: 1px 1px #fff;
-      }
-      .hand {
-        border: 2px dashed #ff6ec7;
-        display: inline-block;
-        padding: 1em;
-        margin-bottom: 1em;
-        background-color: #fff0fa;
-        border-radius: 10px;
-        min-width: 120px;
-      }
-      .top-of-hand {
-        font-size: 2.5em;
-        margin-top: 0.5em;
-      }
-      #turn-counter {
-        font-weight: bold;
-        margin-bottom: 1em;
-        font-size: 1.1em;
-      }
-      #guess-section {
-        margin-top: 2em;
-      }
-      #message {
-        margin-top: 1em;
-        font-weight: bold;
-        color: #c71585;
-      }
-      #emoji-keypad {
-        margin: 1em 0;
-      }
-      .emoji-button {
-        font-size: 1.5em;
-        margin: 0 0.3em;
-        padding: 0.4em 0.6em;
-        border: 2px solid #ff6ec7;
-        background: #fff;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background 0.2s, transform 0.2s;
-      }
-      .emoji-button:hover {
-        background: #ffeafc;
-        transform: scale(1.1);
-      }
-      /* Reusable Game Button CSS */
-      .game-button {
-        font-size: 1em;
-        padding: 0.5em 1em;
-        cursor: pointer;
-        background: #fff;
-        border: 2px solid #c71585;
-        border-radius: 10px;
-        transition: background 0.2s, transform 0.2s;
-        margin: 0.5em; /* Added margin for spacing */
-      }
-      .game-button:hover {
-        background: #ffeafc;
-        transform: scale(1.05);
-      }
-      .delete-button {
-        font-size: 1.5em;
-        margin: 0 0.3em;
-        padding: 0.4em 0.6em;
-        border: 2px solid #ff6ec7;
-        background: #fff;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background 0.2s, transform 0.2s;
-      }
-      .delete-button:hover {
-        background: #ffeafc;
-        transform: scale(1.1);
-      }
-
-      /* NEW: Styled Guess Input */
-      #guess-input {
-        font-family: "Baloo 2", cursive, sans-serif;
-        font-size: 1.1em;
-        padding: 0.6em 1em;
-        border: 2px solid #ff6ec7;
-        border-radius: 12px;
-        background-color: #fff0fa;
-        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
-        transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
-        outline: none;
-        width: 80%;
-        max-width: 400px;
-        margin-top: 0.5em;
-      }
-
-      #guess-input:focus {
-        background-color: #ffeafc;
-        transform: scale(1.02);
-        box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.2);
-      }
-
-      /* Optional: Style the label for better spacing */
-      #guess-section label {
-        display: block;
-        margin-bottom: 0.5em;
-        font-size: 1.2em;
-        color: #c71585;
-      }
-    </style>
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com/" />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com/"
+      crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap"
+      rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="index.css" />
   </head>
   <body>
     <h1>Forth Memory Web Game</h1>
-
     <p>
       A random Forth card is added or manipulates your hand every 2 seconds, for
-      a total of 8 turns.<br>
-      You can only see the top of your hand. <br>
-      <strong>After 8 turns, try to guess the final contents of your hand!</strong>
+      a total of 6 turns.<br />
+      You can only see the top of your hand.<br />
+      <strong>
+        After 6 turns, try to guess the final contents of your hand!
+      </strong>
     </p>
 
     <!-- START GAME BUTTON -->
-    <button id="start-button" class="game-button">Start Game</button>
+    <button
+      id="start-button"
+      class="game-button">
+      Start Game
+    </button>
 
     <!-- NEW GAME BUTTON -->
-    <button id="new-game-button" class="game-button">Reset</button>
+    <button
+      id="new-game-button"
+      class="game-button">
+      Reset
+    </button>
 
     <!-- EMOJI KEYPAD -->
     <div id="emoji-keypad">
       <p><strong>Emoji Keypad (Click to add to your guess):</strong></p>
-      <!-- Buttons will be generated dynamically -->
-    <button class="emoji-button">💎</button><button class="emoji-button">🌟</button><button class="emoji-button">🍎</button><button class="emoji-button">🍓</button><button class="emoji-button">🪙</button><button class="emoji-button">🧸</button><button class="emoji-button">🍬</button><button class="emoji-button">🍩</button><button class="emoji-button">🎈</button><button class="delete-button" title="Delete last emoji">🗑️</button></div>
+      <!-- Default literal emoji buttons shown initially -->
+      <button class="emoji-button">💎</button>
+      <button class="emoji-button">🌟</button>
+      <button class="emoji-button">🍎</button>
+      <button class="emoji-button">🍓</button>
+      <button class="emoji-button">🪙</button>
+      <button class="emoji-button">🧸</button>
+      <button class="emoji-button">🍬</button>
+      <button class="emoji-button">🍩</button>
+      <button class="emoji-button">🎈</button>
+      <button
+        class="delete-button"
+        title="Delete last emoji">
+        🗑️
+      </button>
+    </div>
 
     <div class="hand">
       <div><strong>Top of Hand</strong></div>
-      <div id="top-of-hand" class="top-of-hand">Get ready...</div>
+      <div
+        id="top-of-hand"
+        class="top-of-hand">
+        Get ready...
+      </div>
     </div>
 
     <div id="turn-counter">Turn: 0/8</div>
 
     <div id="guess-section">
       <div>
-        <label for="guess-input"><strong>Guess final hand (top to bottom, sequence of emojis):</strong></label><br>
-        <input type="text" id="guess-input" size="50" placeholder="Example: 🍓🧸">
+        <label for="guess-input"
+          ><strong
+            >Guess final hand (top to bottom, sequence of emojis):</strong
+          ></label
+        ><br />
+        <input
+          type="text"
+          id="guess-input"
+          size="50"
+          placeholder="Example: 🍓🧸" />
       </div>
-      <button id="guess-button" class="game-button">Submit Guess</button>
+      <button
+        id="guess-button"
+        class="game-button">
+        Submit Guess
+      </button>
     </div>
 
     <div id="message"></div>
-
-    <script>
-      // Forth dictionary
-      const literal = (value) => (stack) => {
-        stack.push({ value });
-        return stack;
-      };
-
-      const DICTIONARY = [
-        { name: "💎", before: 0, after: 1, execute: literal("💎") },
-        { name: "🌟", before: 0, after: 1, execute: literal("🌟") },
-        { name: "🍎", before: 0, after: 1, execute: literal("🍎") },
-        { name: "🍓", before: 0, after: 1, execute: literal("🍓") },
-        { name: "🪙", before: 0, after: 1, execute: literal("🪙") },
-        { name: "🧸", before: 0, after: 1, execute: literal("🧸") },
-        { name: "🍬", before: 0, after: 1, execute: literal("🍬") },
-        { name: "🍩", before: 0, after: 1, execute: literal("🍩") },
-        { name: "🎈", before: 0, after: 1, execute: literal("🎈") },
-
-        {
-          name: "swap",
-          before: 2,
-          after: 2,
-          execute(stack) {
-            const item1 = stack.pop();
-            const item2 = stack.pop();
-            if (!item1 || !item2) throw new Error("Stack underflow - swap");
-            stack.push(item1);
-            stack.push(item2);
-            return stack;
-          },
-        },
-
-        {
-          name: "dup",
-          before: 1,
-          after: 2,
-          execute(stack) {
-            const item = stack[stack.length - 1];
-            if (!item) throw new Error("Stack underflow - dup");
-            stack.push(item);
-            return stack;
-          },
-        },
-
-        {
-          name: "drop",
-          before: 1,
-          after: 0,
-          execute(stack) {
-            const item = stack.pop();
-            if (!item) throw new Error("Stack underflow - drop");
-            return stack;
-          },
-        },
-
-        {
-          name: "over",
-          before: 2,
-          after: 3,
-          execute(stack) {
-            const item = stack[stack.length - 2];
-            if (!item) throw new Error("Stack underflow - over");
-            stack.push(item);
-            return stack;
-          },
-        },
-
-        {
-          name: "rot",
-          before: 3,
-          after: 3,
-          execute(stack) {
-            const item3 = stack.splice(-3, 1)[0];
-            if (!item3) throw new Error("Stack underflow - rot");
-            stack.push(item3);
-            return stack;
-          },
-        },
-
-        {
-          name: "-rot",
-          before: 3,
-          after: 3,
-          execute(stack) {
-            const item1 = stack.pop();
-            if (!item1) throw new Error("Stack underflow - -rot");
-            stack.splice(stack.length - 1, 0, item1);
-            return stack;
-          },
-        },
-
-        {
-          name: "2dup",
-          before: 2,
-          after: 4,
-          execute(stack) {
-            const item1 = stack[stack.length - 2];
-            const item2 = stack[stack.length - 1];
-            if (!item1 || !item2) throw new Error("Stack underflow - 2dup");
-            stack.push(item1);
-            stack.push(item2);
-            return stack;
-          },
-        },
-
-        {
-          name: "2drop",
-          before: 2,
-          after: 0,
-          execute(stack) {
-            const item1 = stack.pop();
-            const item2 = stack.pop();
-            if (!item1 || !item2) throw new Error("Stack underflow - 2drop");
-            return stack;
-          },
-        },
-
-        {
-          name: "2swap",
-          before: 4,
-          after: 4,
-          execute(stack) {
-            const pair1 = stack.splice(-2, 2);
-            const pair2 = stack.splice(-2, 2);
-            if (pair1.length < 2 || pair2.length < 2)
-              throw new Error("Stack underflow - 2swap");
-            stack.push(...pair1);
-            stack.push(...pair2);
-            return stack;
-          },
-        },
-      ];
-
-      // Utility to get only the "literal" words (i.e., 0->1)
-      const literalWords = DICTIONARY.filter(
-        (w) => w.before === 0 && w.after === 1
-      );
-
-      // Maximum depth of the stack
-      const maxDepth = 4;
-
-      // Forth "stack" and turn-based logic
-      let stack = [];
-      let turn = 0;
-      const maxTurns = 8;
-      let gameInterval = null;
-      let lastMove = null; // NEW: To keep track of the last move
-
-      // DOM elements
-      const topOfHandEl = document.getElementById("top-of-hand");
-      const turnCounterEl = document.getElementById("turn-counter");
-      const messageEl = document.getElementById("message");
-      const guessInputEl = document.getElementById("guess-input");
-      const guessButtonEl = document.getElementById("guess-button");
-      const startButtonEl = document.getElementById("start-button");
-      const newGameButtonEl = document.getElementById("new-game-button"); // NEW
-      const emojiKeypadEl = document.getElementById("emoji-keypad");
-
-      // Create the keypad but change the event so that clicking adds the emoji to guess:
-      literalWords.forEach((word) => {
-        const btn = document.createElement("button");
-        btn.textContent = word.name;
-        btn.className = "emoji-button";
-
-        // CHANGE: Instead of pushing onto stack, we append to the guess input
-        btn.addEventListener("click", () => {
-          guessInputEl.value += word.name;
-        });
-
-        emojiKeypadEl.appendChild(btn);
-      });
-
-      // NEW: Add a delete button to the emoji keypad
-      const deleteBtn = document.createElement("button");
-      deleteBtn.textContent = "🗑️"; // Trash Can emoji
-      deleteBtn.className = "delete-button";
-      deleteBtn.title = "Delete last emoji";
-
-      deleteBtn.addEventListener("click", () => {
-        const currentGuess = guessInputEl.value.trim();
-        if (currentGuess === "") return;
-
-        // Use Array.from to correctly handle emojis that are represented by multiple code units
-        const guessItems = Array.from(currentGuess);
-        guessItems.pop(); // Remove the last emoji
-        guessInputEl.value = guessItems.join("");
-      });
-
-      emojiKeypadEl.appendChild(deleteBtn);
-
-      // Return only the "legal" moves at a given stack state
-      const legalMoves = ({ stack, dictionary, maxDepth }) => {
-        const result = [];
-        for (const word of dictionary) {
-          if (
-            word.before <= stack.length &&
-            stack.length + word.after <= maxDepth
-          ) {
-            result.push(word);
-          }
-        }
-        return result;
-      };
-
-      // Get one random legal move
-      const randomMove = ({ stack, dictionary, maxDepth }) => {
-        const legal = legalMoves({ stack, dictionary, maxDepth });
-        if (legal.length === 0) {
-          throw new Error("No legal moves available!");
-        }
-        const randIndex = Math.floor(Math.random() * legal.length);
-        return legal[randIndex];
-      };
-
-      function updateUI() {
-        turnCounterEl.textContent = `Turn: ${turn}/${maxTurns}`;
-        topOfHandEl.textContent = "";
-
-        if (lastMove) {
-          topOfHandEl.innerHTML = lastMove.name;
-        } else {
-          topOfHandEl.innerHTML = "Get ready...";
-        }
-      }
-
-      function doTurn() {
-        turn++;
-        if (turn > maxTurns) {
-          stopGame();
-          messageEl.textContent = `${maxTurns} turns complete! Enter your guess for the final hand.`;
-          return;
-        }
-
-        try {
-          const card = randomMove({
-            stack,
-            dictionary: DICTIONARY,
-            maxDepth,
-          });
-
-          card.execute(stack);
-          lastMove = card; // NEW: Set the last move
-          updateUI();
-        } catch (e) {
-          console.warn("No legal moves or error executing a word: ", e);
-        }
-
-        updateUI();
-
-        if (turn === maxTurns) {
-          stopGame();
-          messageEl.textContent = `${maxTurns} turns complete! Enter your guess for the final hand.`;
-        }
-      }
-
-      function clearEverything() {
-        turn = 0;
-        stack = [];
-        lastMove = null;
-        messageEl.textContent = "";
-        guessInputEl.value = "";
-      }
-
-      function startGame() {
-        clearEverything();
-        updateUI();
-        doTurn();
-        gameInterval = setInterval(doTurn, 2000);
-      }
-
-      function stopGame() {
-        clearInterval(gameInterval);
-        gameInterval = null;
-      }
-
-      startButtonEl.addEventListener("click", () => {
-        if (!gameInterval) {
-          startGame();
-        }
-      });
-
-      newGameButtonEl.addEventListener("click", () => {
-        // Hard refresh the page:
-        window.location.reload();
-      });
-
-      guessButtonEl.addEventListener("click", () => {
-        const guess = guessInputEl.value.trim();
-
-        // Split the guess into individual emojis
-        const guessItems = Array.from(guess);
-        const actualTopToBottom = stack.map((item) => item.value);
-
-        let correct = false;
-        if (guessItems.length === actualTopToBottom.length) {
-          correct = guessItems.every((g, i) => g === actualTopToBottom[i]);
-        }
-
-        if (correct) {
-          clearEverything();
-          messageEl.textContent = "Correct! You got it exactly right!";
-        } else {
-          messageEl.textContent =
-            "Incorrect guess! Correct answer: " + actualTopToBottom.join("");
-        }
-      });
-
-      updateUI();
-    </script>
-  
-
-</body></html>
+    <script
+      type="module"
+      src="./dictionary.js"></script>
+    <script
+      type="module"
+      src="./index.js"></script>
+    <script src="./style.js"></script>
+  </body>
+</html>
